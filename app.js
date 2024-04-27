@@ -3,7 +3,7 @@ const cors = require('cors');
 const DbConnect=require('./public/DbConnect')
 const addPost=require('./public/Controllers/addPost')
 const postSchema=require('./public/Schemas/postSchema')
-require('dotenv').config();
+// require('dotenv').config();
 
 
 const app = express()
