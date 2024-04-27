@@ -26,6 +26,7 @@ app.post('/add-post',async (req, res) => {
     res.send({status:"Okay",message:"Post created succesfully"})
   } catch (error) {
     console.log(error);
+    res.send(error)
   }
 })
 
