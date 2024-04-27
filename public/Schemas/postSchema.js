@@ -23,7 +23,13 @@ const post=new mongoose.Schema({
     },
     category:String,
     board:String,
-    uniqueId:String
+    uniqueId:String,
+    date:{
+        type:Date,
+        default:Date.now()
+    },
+   
+
 
 })
 

@@ -23,18 +23,31 @@ app.post('/add-post',async (req, res) => {
   try {
     let post=new postSchema(req.body)
     await post.save()
-    res.send({status:"Okay",message:"Post created succesfully"})
+    res.send({success:true,message:"Post created succesfully"})
   } catch (error) {
     console.log(error);
     res.send(error)
   }
 })
 
-app.post('/like-post', (req, res) => {
+app.post('/like-post',async(req, res) => {
+ 
+  let post=await postSchema.findOne({uniqueId:req.body.uniqueId})
+  let likes=post.likes
+  post.likes=likes+1
+  await post.save()
+  
+  // await postSchema.findOneAndUpdate({uniqueId: uniqueId},{likes:result.likes+1});
+  res.send({success:true,message:"Post Liked"})
+
 
 })
-app.post('/comment-post', (req, res) => {
-
+app.post('/comment', async(req, res) => {
+  let post=await postSchema.findOne({uniqueId:req.body.uniqueId})
+  let comment=req.body.comment
+  post.comments.push(comment)
+  await post.save()
+  res.send({success:true,message:"Comment added"})
 })
 
 app.listen(PORT, () => {
