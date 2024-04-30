@@ -49,6 +49,10 @@ app.post('/comment', async(req, res) => {
   await post.save()
   res.send({success:true,message:"Comment added"})
 })
+app.get('/posts',async(req,res)=>{
+ let posts=await postSchema.find({board:req.body.board})
+ res.send(posts)
+})
 
 app.listen(PORT, () => {
   console.log(`✅ Server is running on port ${PORT}`);
