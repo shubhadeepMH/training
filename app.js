@@ -45,12 +45,12 @@ app.post('/like-post',async(req, res) => {
 app.post('/comment', async(req, res) => {
   let post=await postSchema.findOne({uniqueId:req.body.uniqueId})
   let comment=req.body.comment
-  post.comments.push(comment)
+  post.comments.unshift(comment)
   await post.save()
   res.send({success:true,message:"Comment added"})
 })
 app.post('/posts',async(req,res)=>{
- let posts=await postSchema.find({board:req.body.board})
+ let posts=await postSchema.find({board:req.body.board}).sort({ date: -1 });
  res.send(posts)
 })
 

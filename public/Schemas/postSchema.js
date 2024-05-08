@@ -28,6 +28,7 @@ const post=new mongoose.Schema({
         type:Date,
         default:Date.now()
     },
+    
    
 
 
