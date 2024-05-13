@@ -33,12 +33,12 @@ app.post('/add-post',async (req, res) => {
 app.post('/report',async(req, res) => {
  
   let post=await postSchema.findOne({uniqueId:req.body.uniqueId})
-  let likes=post.likes
-  post.likes=likes+1
+  let reports=post.reports
+  post.reports=reports+1
   await post.save()
   
   // await postSchema.findOneAndUpdate({uniqueId: uniqueId},{likes:result.likes+1});
-  res.send({success:true,message:"Post Liked"})
+  res.send({success:true,message:"Post Roported"})
 
 
 })
