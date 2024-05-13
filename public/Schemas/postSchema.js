@@ -13,13 +13,17 @@ const post=new mongoose.Schema({
         required: true
     },
     fileUrl:String,
-    likes:{
+    reports:{
         type:Number,
         default:0,
     },
     comments:{
         type:[String],
         default:[]
+    },
+    adminPost:{
+        type:Boolean,
+        default:false
     },
     category:String,
     board:String,

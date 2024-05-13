@@ -30,7 +30,7 @@ app.post('/add-post',async (req, res) => {
   }
 })
 
-app.post('/like-post',async(req, res) => {
+app.post('/report',async(req, res) => {
  
   let post=await postSchema.findOne({uniqueId:req.body.uniqueId})
   let likes=post.likes
@@ -49,10 +49,39 @@ app.post('/comment', async(req, res) => {
   await post.save()
   res.send({success:true,message:"Comment added"})
 })
+// Fetching all posts
 app.post('/posts',async(req,res)=>{
  let posts=await postSchema.find({board:req.body.board}).sort({ date: -1 });
  res.send(posts)
 })
+// Fetching all reported posts
+app.get('/reported-posts', async (req, res) => {
+  try {
+    const posts = await postSchema.find({ reports: { $gt: 0 } });
+    res.json(posts);
+  } catch (error) {
+    console.error('Error fetching posts with reports:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+  // Deleting post
+app.delete('/delete/:postId', async (req, res) => {
+  const { postId } = req.params;
+
+  try {
+    const deletedPost = await postSchema.findByIdAndDelete(postId);
+    if (!deletedPost) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    res.json({ message: 'Post deleted successfully', deletedPost });
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`✅ Server is running on port ${PORT}`);
