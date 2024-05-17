@@ -3,7 +3,17 @@ const cors = require('cors');
 const DbConnect = require('./public/DbConnect');
 const addPost = require('./public/Controllers/addPost');
 const postSchema = require('./public/Schemas/postSchema');
-const WebSocket = require('ws');
+const Pusher = require("pusher");
+
+const pusher = new Pusher({
+  appId: "1804330",
+  key: "85b16538859776a18088",
+  secret: "7f1e7098ab6fe6d43835",
+  cluster: "us3",
+  useTLS: true
+});
+
+let userCount = 0;
 
 // Create an Express application
 const app = express();
@@ -14,7 +24,18 @@ app.use(express.json());
 app.use(cors());
 
 // Connect to the database
+// Real time user fetch
+app.post('/increment-user-count', (req, res) => {
+  userCount++;
+  pusher.trigger('user-count', 'update', { userCount });
+  res.sendStatus(200);
+});
 
+app.post('/decrement-user-count', (req, res) => {
+  userCount--;
+  pusher.trigger('user-count', 'update', { userCount });
+  res.sendStatus(200);
+});
 
 // Define routes
 app.get('/', (req, res) => {
@@ -107,32 +128,4 @@ const server = app.listen(PORT, () => {
   console.log(`✅ Server is running on port ${PORT}`);
 });
 
-// Create a WebSocket server
-const wss = new WebSocket.Server({ server });
 
-let userCount = 0;
-
-wss.on('connection', (ws) => {
-  userCount++;
-  console.log(`New connection. Total users: ${userCount}`);
-
-  // Broadcast the new user count to all connected clients
-  wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify({ userCount }));
-    }
-  });
-
-  ws.on('close', () => {
-    userCount--;
-    console.log(`Connection closed. Total users: ${userCount}`);
-
-    // Broadcast the updated user count to all connected clients
-    wss.clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({ userCount }));
-        console.log(userCount)
-      }
-    });
-  });
-});
