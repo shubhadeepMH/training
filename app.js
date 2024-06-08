@@ -101,7 +101,7 @@ app.get('/reported-posts', async (req, res) => {
 app.get('/all-posts', async (req, res) => {
   try {
     const posts = await postSchema.find();
-    res.json({postsLength:posts.length});
+    res.json({posts});
   } catch (error) {
     console.error('Error fetching Number of all posts:', error);
     res.status(500).json({ message: 'Internal server error' });
