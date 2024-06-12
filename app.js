@@ -4,6 +4,7 @@ const DbConnect = require('./public/DbConnect');
 const addPost = require('./public/Controllers/addPost');
 const postSchema = require('./public/Schemas/postSchema');
 const Pusher = require("pusher");
+const {shuffleArray} =require('./public/Utils/ShufflePosts')
 
 const pusher = new Pusher({
   appId: "1804330",
@@ -101,7 +102,8 @@ app.get('/reported-posts', async (req, res) => {
 app.get('/all-posts', async (req, res) => {
   try {
     const posts = await postSchema.find();
-    res.json({posts});
+    let shuffledPosts=shuffleArray(posts) //Shuffling the posts forcreate differnt feed for everyone.
+    res.json({shuffledPosts});
   } catch (error) {
     console.error('Error fetching Number of all posts:', error);
     res.status(500).json({ message: 'Internal server error' });

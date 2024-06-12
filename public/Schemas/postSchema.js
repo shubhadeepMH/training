@@ -2,7 +2,9 @@ const mongoose=require('mongoose')
 const post=new mongoose.Schema({
     name:{
         type: String,
-        required: true
+    },
+    userEmail:{
+        type:String,
     },
     title:{
         type: String,
@@ -17,7 +19,22 @@ const post=new mongoose.Schema({
         type:Number,
         default:0,
     },
+    hashTags:{
+        type:[String],
+    },
+    likes:{
+        type:[String],
+        default:[]
+    },
     comments:{
+        type:[String],
+        default:[]
+    },
+    views:{
+        type:[String],
+        default:[]
+    },
+    shares:{
         type:[String],
         default:[]
     },
