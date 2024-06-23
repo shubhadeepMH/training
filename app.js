@@ -128,7 +128,7 @@ app.delete('/delete/:postId', async (req, res) => {
 app.post("/trend-post",async(req,res)=>{
   const options = { new: true }; // Return the updated document
   let postUid=req.postUid;
-  let post=await postSchema.findOneAndUpdate({uniqueId:postUid},{trending:true},options)
+  let post = await postSchema.findByIdAndUpdate(postUid, { trending: true }, options);
  
   res.send({message:"trending the post",success:true,data:post})
 
