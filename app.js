@@ -125,6 +125,22 @@ app.delete('/delete/:postId', async (req, res) => {
   }
 });
 
+app.put("/trend-post",async(req,res)=>{
+  const options = { new: true }; // Return the updated document
+  let postUid=req.postUid;
+  let post=await postSchema.findOneAndUpdate({uniqueId:postUid},{trending:true},options)
+ 
+  res.send({message:"trending the post",success:true,data:post})
+
+})
+
+app.get("/trending",async(req,res)=>{
+    let trendingPosts=await postSchema.find({trending:true}).sort({ 'comments.length': -1 });
+    res.send({trending:trendingPosts})
+
+
+})
+
 // Create an HTTP server using Express
 const server = app.listen(PORT, () => {
   console.log(`✅ Server is running on port ${PORT}`);

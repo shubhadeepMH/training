@@ -45,6 +45,10 @@ const post=new mongoose.Schema({
     category:String,
     board:String,
     uniqueId:String,
+    trending:{
+        type:Boolean,
+        default:false,
+    },
     date:{
         type:Date,
         default:Date.now()
