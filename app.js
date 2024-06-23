@@ -135,9 +135,11 @@ app.post("/trend-post",async(req,res)=>{
 })
 
 app.get("/trending",async(req,res)=>{
-    let trendingPosts=await postSchema.find({trending:true}).sort({ 'comments.length': -1 });
-    res.send({trending:trendingPosts})
+  let trendingPosts = await postSchema.find({trending:true}, )
+ 
+ 
 
+res.send({ trending: trendingPosts });
 
 })
 
