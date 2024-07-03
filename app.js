@@ -143,6 +143,12 @@ res.send({ trending: trendingPosts });
 
 })
 
+app.post("/get-post",async(req,res)=>{
+  let uid= req.body.uid;
+  let post = await postSchema.findOne({uniqueId:uid})
+  res.send(post);
+})
+
 // Create an HTTP server using Express
 const server = app.listen(PORT, () => {
   console.log(`✅ Server is running on port ${PORT}`);
